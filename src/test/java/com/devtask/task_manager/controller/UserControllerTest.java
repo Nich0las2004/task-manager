@@ -2,6 +2,7 @@ package com.devtask.task_manager.controller;
 
 import com.devtask.task_manager.entity.UserEntity;
 import com.devtask.task_manager.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -50,7 +53,19 @@ class UserControllerTest {
     }
 
     @Test
-    void createUser() {
+    void createUser() throws Exception {
+        UserEntity createdUser = new UserEntity(1L, "John123", "john123@gmail.com");
+        when(userService.createUser(any(UserEntity.class))).thenReturn(createdUser);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String userJson = mapper.writeValueAsString(createdUser);
+
+        mockMvc.perform(post("/users/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(userJson))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(userJson));
     }
 
     @Test
