@@ -5,6 +5,7 @@ import java.util.List;
 import com.devtask.task_manager.entity.UserEntity;
 import com.devtask.task_manager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity user) {
         UserEntity createdUser = userService.createUser(user);
-        return ResponseEntity.status(201).body(createdUser);
+        return ResponseEntity.status(201).contentType(MediaType.APPLICATION_JSON).body(createdUser);
     }
 
     @PutMapping("/update/{id}")
