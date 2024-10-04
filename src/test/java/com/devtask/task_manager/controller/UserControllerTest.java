@@ -98,6 +98,17 @@ class UserControllerTest {
     }
 
     @Test
-    void getUserById() {
+    void getUserById() throws Exception{
+        UserEntity foundUser = new UserEntity(1L, "John123", "john123@gmail.com");
+
+        when(userService.getUserById(eq(1L))).thenReturn(foundUser);
+
+        mockMvc.perform(get("/users/find/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("{\"id\":1,\"username\":\"John123\",\"email\":\"john123@gmail.com\"}"));
+
+        verify(userService).getUserById(eq(1L));
+
     }
 }
