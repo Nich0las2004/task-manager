@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
@@ -18,9 +19,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -69,7 +73,18 @@ class UserControllerTest {
     }
 
     @Test
-    void updateUser() {
+    void updateUser() throws Exception {
+        UserEntity updatedUser = new UserEntity(1L, "John123", "john123@gmail.com");
+
+        when(userService.updateUser(eq(1L), any(UserEntity.class))).thenReturn(updatedUser);
+
+        mockMvc.perform(put("/users/update/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\":1,\"username\":\"John123\",\"email\":\"john123@gmail.com\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("User updated"));
+
+        verify(userService).updateUser(eq(1L), any(UserEntity.class));
     }
 
     @Test
