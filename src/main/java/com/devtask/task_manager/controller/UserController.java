@@ -5,6 +5,10 @@ import java.util.List;
 import com.devtask.task_manager.entity.UserEntity;
 import com.devtask.task_manager.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +26,15 @@ public class UserController {
     }
 
     @Operation(summary = "Get users", description = "Get a list of Users")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found the User",
+                content = {@Content(mediaType = "application/json",
+                schema = @Schema(implementation = UserEntity.class)
+                )}
+            ),
+            @ApiResponse(responseCode = "404", description = "Users not found",
+            content = @Content)
+    })
 
     @GetMapping
     public ResponseEntity<List<UserEntity>> getAllUsers() {
