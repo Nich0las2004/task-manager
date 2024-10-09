@@ -27,7 +27,7 @@ public class UserController {
 
     @Operation(summary = "Get users", description = "Get a list of Users")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found the User",
+            @ApiResponse(responseCode = "200", description = "Found all the Users",
                 content = {@Content(mediaType = "application/json",
                 schema = @Schema(implementation = UserEntity.class)
                 )}
@@ -39,10 +39,24 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserEntity>> getAllUsers() {
         List<UserEntity> users = userService.getAllUsers();
+
+        if (users.isEmpty()) {
+            return ResponseEntity.status(404).body(null);
+        }
+
         return ResponseEntity.ok(users);
     }
 
     @Operation(summary = "Create user", description = "Create a new user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created a User",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserEntity.class)
+                    )}
+            ),
+            @ApiResponse(responseCode = "404", description = "Error creating a user",
+                    content = @Content)
+    })
 
     @PostMapping("/create")
     public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity user) {
@@ -51,6 +65,15 @@ public class UserController {
     }
 
     @Operation(summary = "Update user", description = "Update an existing user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Updated the User",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserEntity.class)
+                    )}
+            ),
+            @ApiResponse(responseCode = "404", description = "Error updating a user",
+                    content = @Content)
+    })
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody UserEntity user) {
@@ -64,6 +87,15 @@ public class UserController {
     }
 
     @Operation(summary = "Delete user", description = "Delete an existing user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Deleted a user",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserEntity.class)
+                    )}
+            ),
+            @ApiResponse(responseCode = "404", description = "Error deleting a user",
+                    content = @Content)
+    })
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
@@ -72,6 +104,15 @@ public class UserController {
     }
 
     @Operation(summary = "Find user", description = "Find an existing user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found the User",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserEntity.class)
+                    )}
+            ),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content)
+    })
 
     @GetMapping("/find/{id}")
     public ResponseEntity<UserEntity> getUserById(@PathVariable Long id) {
