@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.devtask.task_manager.entity.UserEntity;
 import com.devtask.task_manager.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,17 +21,23 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Operation(summary = "Get users", description = "Get a list of Users")
+
     @GetMapping
     public ResponseEntity<List<UserEntity>> getAllUsers() {
         List<UserEntity> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
+    @Operation(summary = "Create user", description = "Create a new user")
+
     @PostMapping("/create")
     public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity user) {
         UserEntity createdUser = userService.createUser(user);
         return ResponseEntity.status(201).contentType(MediaType.APPLICATION_JSON).body(createdUser);
     }
+
+    @Operation(summary = "Update user", description = "Update an existing user")
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody UserEntity user) {
@@ -43,11 +50,15 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Delete user", description = "Delete an existing user")
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Find user", description = "Find an existing user")
 
     @GetMapping("/find/{id}")
     public ResponseEntity<UserEntity> getUserById(@PathVariable Long id) {
