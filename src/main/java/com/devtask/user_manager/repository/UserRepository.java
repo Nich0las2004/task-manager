@@ -1,6 +1,6 @@
-package com.devtask.task_manager.repository;
+package com.devtask.user_manager.repository;
 
-import com.devtask.task_manager.entity.UserEntity;
+import com.devtask.user_manager.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

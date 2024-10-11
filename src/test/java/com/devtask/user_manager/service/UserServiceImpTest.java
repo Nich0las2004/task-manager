@@ -1,7 +1,7 @@
-package com.devtask.task_manager.service;
+package com.devtask.user_manager.service;
 
-import com.devtask.task_manager.entity.UserEntity;
-import com.devtask.task_manager.repository.UserRepository;
+import com.devtask.user_manager.entity.UserEntity;
+import com.devtask.user_manager.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

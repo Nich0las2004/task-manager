@@ -1,7 +1,7 @@
-package com.devtask.task_manager.service;
+package com.devtask.user_manager.service;
 
 import java.util.List;
-import com.devtask.task_manager.entity.UserEntity;
+import com.devtask.user_manager.entity.UserEntity;
 
 public interface UserService {
     List<UserEntity> getAllUsers();
