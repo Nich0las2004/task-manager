@@ -1,6 +1,8 @@
 package com.devtask.task_manager.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.devtask.task_manager.entity.UserEntity;
 import com.devtask.task_manager.service.UserService;
@@ -37,11 +39,13 @@ public class UserController {
     })
 
     @GetMapping
-    public ResponseEntity<List<UserEntity>> getAllUsers() {
+    public ResponseEntity<?> getAllUsers() {
         List<UserEntity> users = userService.getAllUsers();
 
         if (users.isEmpty()) {
-            return ResponseEntity.status(404).body(null);
+            Map<String, String> response = new HashMap<>();
+            response.put("response", "Users not found");
+            return ResponseEntity.status(404).body(response);
         }
 
         return ResponseEntity.ok(users);
@@ -54,14 +58,21 @@ public class UserController {
                             schema = @Schema(implementation = UserEntity.class)
                     )}
             ),
-            @ApiResponse(responseCode = "404", description = "Error creating a user",
+            @ApiResponse(responseCode = "500", description = "Error creating a user",
                     content = @Content)
     })
 
     @PostMapping("/create")
-    public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity user) {
-        UserEntity createdUser = userService.createUser(user);
-        return ResponseEntity.status(201).contentType(MediaType.APPLICATION_JSON).body(createdUser);
+    public ResponseEntity<?> createUser(@RequestBody UserEntity user) {
+        try{
+            UserEntity createdUser = userService.createUser(user);
+            return ResponseEntity.status(201).contentType(MediaType.APPLICATION_JSON).body(createdUser);
+        }
+        catch (Exception e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("error", "An unexpected error occurred");
+            return ResponseEntity.status(500).body(response);
+        }
     }
 
     @Operation(summary = "Update user", description = "Update an existing user")
@@ -76,13 +87,17 @@ public class UserController {
     })
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody UserEntity user) {
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserEntity user) {
         UserEntity updatedUser = userService.updateUser(id, user);
 
         if(updatedUser != null){
-            return ResponseEntity.ok("User updated");
+            Map<String, String> response = new HashMap<>();
+            response.put("response", "Updated the User");
+            return ResponseEntity.status(201).body(response);
         }else{
-            return ResponseEntity.status(404).body("User Not Found");
+            Map<String, String> response = new HashMap<>();
+            response.put("response", "Error updating a user");
+            return ResponseEntity.status(404).body(response);
         }
     }
 
@@ -98,9 +113,17 @@ public class UserController {
     })
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        UserEntity userToDelete = userService.getUserById(id);
+
+        if (userToDelete != null) {
+            userService.deleteUser(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            Map<String, String> response = new HashMap<>();
+            response.put("response", "Error deleting a user");
+            return ResponseEntity.status(404).body(response);
+        }
     }
 
     @Operation(summary = "Find user", description = "Find an existing user")
@@ -115,13 +138,15 @@ public class UserController {
     })
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<UserEntity> getUserById(@PathVariable Long id) {
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
         UserEntity foundUser = userService.getUserById(id);
 
         if (foundUser != null) {
             return ResponseEntity.ok(foundUser);
         } else {
-            return ResponseEntity.status(404).body(null);
+            Map<String, String> response = new HashMap<>();
+            response.put("response", "User not found");
+            return ResponseEntity.status(404).body(response);
         }
     }
 }
