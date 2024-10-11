@@ -1,11 +1,11 @@
-package com.devtask.task_manager.controller;
+package com.devtask.user_manager.controller;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.devtask.task_manager.entity.UserEntity;
-import com.devtask.task_manager.service.UserService;
+import com.devtask.user_manager.entity.UserEntity;
+import com.devtask.user_manager.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

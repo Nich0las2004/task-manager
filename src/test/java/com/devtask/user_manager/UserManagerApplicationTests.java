@@ -1,10 +1,10 @@
-package com.devtask.task_manager;
+package com.devtask.user_manager;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TaskManagerApplicationTests {
+class UserManagerApplicationTests {
 
 	@Test
 	void contextLoads() {

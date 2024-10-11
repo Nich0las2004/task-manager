@@ -1,4 +1,4 @@
-package com.devtask.task_manager.security;
+package com.devtask.user_manager.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

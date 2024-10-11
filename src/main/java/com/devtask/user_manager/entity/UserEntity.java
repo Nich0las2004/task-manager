@@ -1,4 +1,4 @@
-package com.devtask.task_manager.entity;
+package com.devtask.user_manager.entity;
 
 import jakarta.persistence.*;
 
