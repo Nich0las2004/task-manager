@@ -22,8 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class UserControllerTest {
 
@@ -78,14 +77,18 @@ class UserControllerTest {
         mockMvc.perform(put("/users/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\":1,\"username\":\"John123\",\"email\":\"john123@gmail.com\"}"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("User updated"));
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.response").value("Updated the User"));
 
         verify(userService).updateUser(eq(1L), any(UserEntity.class));
     }
 
     @Test
     void deleteUser() throws Exception {
+        UserEntity userToDelete = new UserEntity(1L, "John123", "john123@gmail.com");
+
+        when(userService.getUserById(1L)).thenReturn(userToDelete);
+
         doNothing().when(userService).deleteUser(1L);
 
         mockMvc.perform(delete("/users/delete/1"))
