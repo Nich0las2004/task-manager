@@ -3,6 +3,10 @@
 ## Overview
 **User Manager** is a simple RESTful API built using Spring Boot for managing users. It includes the ability to create, read, update, and delete user data, with API documentation provided via Swagger. 🚀
 
+## Live Demo
+You can access the live version of the User Manager API here:  
+👉 [Live API Documentation](https://user-manager-latest.onrender.com/swagger-ui/index.html) 👈
+
 ## Features
 - ✏️ **Create, Update, Delete, and Retrieve** users
 - 🔗 **RESTful API** endpoints with CRUD operations
